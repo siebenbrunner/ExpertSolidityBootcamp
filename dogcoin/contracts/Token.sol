@@ -6,7 +6,7 @@ import "hardhat/console.sol";
 
 contract Token is ERC20 {
     address[] public holders;
-    mapping(address => uint256) private holdersToIndices;
+    mapping(address => uint256) public holdersToIndices;
 
     constructor() ERC20("DogCoin", "DOGCOIN") {
         _addHolder(msg.sender);
