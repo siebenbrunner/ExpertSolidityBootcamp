@@ -13,12 +13,19 @@ contract Token is ERC20 {
         _mint(msg.sender, 1000000 * 10 ** decimals());
     }
 
-    function _addHolder(address _holder) public {
+    /* before first transfer to the holder */
+    function _addHolder(address _holder) internal {
       if(balanceOf(_holder) != 0) {
         return;
       }
       uint idx = holders.length;
       holders.push(_holder);
       holdersToIndices[_holder] = idx;
+    }
+
+    function transfer(address _to, uint256 _amount) public override returns (bool) {
+      _addHolder(_to);
+      super.transfer(_to, _amount);
+      return true;
     }
 }
