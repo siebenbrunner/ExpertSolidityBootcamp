@@ -22,6 +22,11 @@ describe("Token contract", function () {
       const ownerBalance = await hardhatToken.balanceOf(owner.address);
       expect(await hardhatToken.totalSupply()).to.equal(ownerBalance);
     });
+
+    it("Should add the owner to holders array and mapping", async function () {
+      const holder0 = await hardhatToken.holders(0);
+      expect(holder0).to.equal(owner.address);
+    });
   });
 
   describe("Transactions", function () {
