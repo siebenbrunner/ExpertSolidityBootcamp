@@ -32,18 +32,28 @@ describe("Token contract", function () {
   });
 
   describe("Transactions", function () {
-    it("Should transfer tokens between accounts", async function () {
+    it("Should transfer tokens between accounts and update holders array", async function () {
       await hardhatToken.transfer(addr1.address, 50);
       const addr1Balance = await hardhatToken.balanceOf(
         addr1.address
       );
       expect(addr1Balance).to.equal(50);
 
+      const holder1 = await hardhatToken.holders(1);
+      expect(holder1).to.equal(addr1.address);
+      const holder1idx = await hardhatToken.holdersToIndices(addr1.address)
+      expect(holder1idx).to.equal(1)
+
       await hardhatToken.connect(addr1).transfer(addr2.address, 50);
       const addr2Balance = await hardhatToken.balanceOf(
         addr2.address
       );
       expect(addr2Balance).to.equal(50);
+
+      const holder2 = await hardhatToken.holders(2);
+      expect(holder2).to.equal(addr2.address);
+      const holder2idx = await hardhatToken.holdersToIndices(addr2.address)
+      expect(holder2idx).to.equal(2)
     });
 
     it("Should fail if sender doesn’t have enough tokens", async function () {
