@@ -32,4 +32,8 @@ contract Token is ERC20 {
       super.transfer(_to, _amount);
       return true;
     }
+
+    function holdersLength() public view returns (uint) {
+      return holders.length;
+    }
 }
