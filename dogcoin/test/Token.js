@@ -18,10 +18,6 @@ describe("Token contract", function () {
   });
 
   describe("Deployment", function () {
-    it("Should set the right owner", async function () {
-      expect(await hardhatToken.owner()).to.equal(owner.address);
-    });
-
     it("Should assign the total supply of tokens to the owner", async function () {
       const ownerBalance = await hardhatToken.balanceOf(owner.address);
       expect(await hardhatToken.totalSupply()).to.equal(ownerBalance);
@@ -50,7 +46,7 @@ describe("Token contract", function () {
 
       await expect(
         hardhatToken.connect(addr1).transfer(owner.address, 1)
-      ).to.be.revertedWith("Not enough tokens");
+      ).to.be.reverted
 
       expect(await hardhatToken.balanceOf(owner.address)).to.equal(
         initialOwnerBalance
@@ -69,7 +65,7 @@ describe("Token contract", function () {
       const finalOwnerBalance = await hardhatToken.balanceOf(
         owner.address
       );
-      expect(finalOwnerBalance).to.equal(initialOwnerBalance - 150);
+      expect(finalOwnerBalance).to.equal(initialOwnerBalance.sub(ethers.BigNumber.from(150)));
 
       const addr1Balance = await hardhatToken.balanceOf(
         addr1.address
