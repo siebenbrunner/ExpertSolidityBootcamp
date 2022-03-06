@@ -78,7 +78,7 @@ describe("Token contract", function () {
 
       const holder0 = await hardhatToken.holders(0);
       expect(holder0).to.equal(owner.address);
-      const holder0idx = await hardhatToken.holdersToIndices(addr0.address)
+      const holder0idx = await hardhatToken.holdersToIndices(owner.address)
       expect(holder0idx).to.equal(0)
 
     });

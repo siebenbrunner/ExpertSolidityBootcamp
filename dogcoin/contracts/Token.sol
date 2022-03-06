@@ -30,10 +30,35 @@ contract Token is ERC20 {
     function transfer(address _to, uint256 _amount) public override returns (bool) {
       _addHolder(_to);
       super.transfer(_to, _amount);
+      _removeHolder(msg.sender);
       return true;
     }
 
     function holdersLength() public view returns (uint) {
       return holders.length;
+    }
+
+    /* execute after transfer from the holder */
+    function _removeHolder(address _holder) internal {
+      if(balanceOf(_holder) != 0) {
+        return;
+      }
+
+      uint index = holdersToIndices[_holder];
+
+      if(holders.length < 1 || index > holders.length -1) {
+        return;
+      }
+
+      // Move the last element into the place to delete
+      holders[index] = holders[holders.length - 1];
+
+      // update the index
+      holdersToIndices[holders[index]] = index;
+
+      // Remove the last element
+      holders.pop();
+
+      emit holderRemoved(_holder);
     }
 }
