@@ -8,6 +8,9 @@ contract Token is ERC20 {
     address[] public holders;
     mapping(address => uint256) public holdersToIndices;
 
+    event holderAdded(address indexed holder);
+    event holderRemoved(address indexed holder);
+
     constructor() ERC20("DogCoin", "DOGCOIN") {
         _addHolder(msg.sender);
         _mint(msg.sender, 1000000 * 10 ** decimals());
@@ -21,6 +24,7 @@ contract Token is ERC20 {
       uint idx = holders.length;
       holders.push(_holder);
       holdersToIndices[_holder] = idx;
+      emit holderAdded(_holder);
     }
 
     function transfer(address _to, uint256 _amount) public override returns (bool) {
